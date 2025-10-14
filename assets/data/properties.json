@@ -1,0 +1,204 @@
+{
+  "properties": [
+    {
+      "id": 1,
+      "title": "Modern Apartment",
+      "city": "Miami",
+      "price": 1200,
+      "image": "https://picsum.photos/seed/prop1/400/300",
+      "description": "Spacious 2-bedroom apartment with ocean view. Recently renovated with modern appliances and a large balcony perfect for entertaining."
+    },
+    {
+      "id": 2,
+      "title": "Downtown Loft",
+      "city": "New York",
+      "price": 2500,
+      "image": "https://picsum.photos/seed/prop2/400/300",
+      "description": "Industrial-style loft in the heart of Manhattan. High ceilings, exposed brick walls, and walking distance to subway stations."
+    },
+    {
+      "id": 3,
+      "title": "Beach House",
+      "city": "Miami",
+      "price": 3500,
+      "image": "https://picsum.photos/seed/prop3/400/300",
+      "description": "Stunning beachfront property with direct access to the sand. 4 bedrooms, infinity pool, and breathtaking sunset views."
+    },
+    {
+      "id": 4,
+      "title": "Cozy Studio",
+      "city": "Boston",
+      "price": 950,
+      "image": "https://picsum.photos/seed/prop4/400/300",
+      "description": "Perfect starter apartment near universities. Compact yet functional design with all utilities included in rent."
+    },
+    {
+      "id": 5,
+      "title": "Luxury Penthouse",
+      "city": "Los Angeles",
+      "price": 5000,
+      "image": "https://picsum.photos/seed/prop5/400/300",
+      "description": "Top-floor penthouse with panoramic city views. Private elevator, rooftop terrace, and state-of-the-art smart home system."
+    },
+    {
+      "id": 6,
+      "title": "Family Home",
+      "city": "Austin",
+      "price": 1800,
+      "image": "https://picsum.photos/seed/prop6/400/300",
+      "description": "Spacious 3-bedroom house with large backyard. Great neighborhood with excellent schools and parks nearby."
+    },
+    {
+      "id": 7,
+      "title": "Urban Condo",
+      "city": "Seattle",
+      "price": 1600,
+      "image": "https://picsum.photos/seed/prop7/400/300",
+      "description": "Modern condo in tech district. Building amenities include gym, co-working space, and rooftop lounge."
+    },
+    {
+      "id": 8,
+      "title": "Historic Townhouse",
+      "city": "Boston",
+      "price": 2200,
+      "image": "https://picsum.photos/seed/prop8/400/300",
+      "description": "Charming 19th-century townhouse with original hardwood floors. Beautifully restored while maintaining period features."
+    },
+    {
+      "id": 9,
+      "title": "Mountain Cabin",
+      "city": "Denver",
+      "price": 1400,
+      "image": "https://picsum.photos/seed/prop9/400/300",
+      "description": "Rustic cabin with mountain views. Ideal for nature lovers, featuring a fireplace and access to hiking trails."
+    },
+    {
+      "id": 10,
+      "title": "Waterfront Condo",
+      "city": "Miami",
+      "price": 2800,
+      "image": "https://picsum.photos/seed/prop10/400/300",
+      "description": "Luxury waterfront living with marina access. Floor-to-ceiling windows and private boat slip included."
+    },
+    {
+      "id": 11,
+      "title": "Garden Apartment",
+      "city": "Portland",
+      "price": 1100,
+      "image": "https://picsum.photos/seed/prop11/400/300",
+      "description": "Ground-floor apartment with private garden space. Pet-friendly community in a quiet residential area."
+    },
+    {
+      "id": 12,
+      "title": "Tech District Studio",
+      "city": "San Francisco",
+      "price": 2000,
+      "image": "https://picsum.photos/seed/prop12/400/300",
+      "description": "Efficient studio in the heart of SOMA. Walking distance to tech companies and public transportation."
+    },
+    {
+      "id": 13,
+      "title": "Suburban House",
+      "city": "Chicago",
+      "price": 1500,
+      "image": "https://picsum.photos/seed/prop13/400/300",
+      "description": "Comfortable 3-bedroom house in a family-friendly suburb. Large yard, garage, and close to schools."
+    },
+    {
+      "id": 14,
+      "title": "City Center Apartment",
+      "city": "Los Angeles",
+      "price": 2300,
+      "image": "https://picsum.photos/seed/prop14/400/300",
+      "description": "Contemporary apartment in downtown LA. Access to rooftop pool, fitness center, and trendy restaurants."
+    },
+    {
+      "id": 15,
+      "title": "Chic Loft",
+      "city": "New York",
+      "price": 2700,
+      "image": "https://picsum.photos/seed/prop15/400/300",
+      "description": "Stylish loft with open floor plan and modern finishes. Located in a vibrant neighborhood with nightlife and culture."
+    },
+    {
+      "id": 16,
+      "title": "Eco-Friendly Apartment",
+      "city": "San Francisco",
+      "price": 2100,
+      "image": "https://picsum.photos/seed/prop16/400/300",
+      "description": "Sustainable living in a green-certified building. Solar panels, energy-efficient appliances, and community garden."
+    },
+    {
+      "id": 17,
+      "title": "Luxury Villa",
+      "city": "Miami",
+      "price": 6000,
+      "image": "https://picsum.photos/seed/prop17/400/300",
+      "description": "Exquisite villa with private pool and beach access. High-end finishes, spacious layout, and stunning ocean views."
+    },
+    {
+      "id": 18,
+      "title": "Compact City Apartment",
+      "city": "Chicago",
+      "price": 1300,
+      "image": "https://picsum.photos/seed/prop18/400/300",
+      "description": "Efficiently designed apartment in the city center. Perfect for singles or couples looking for urban convenience."
+    },
+    {
+      "id": 19,
+      "title": "Riverside Condo",
+      "city": "Seattle",
+      "price": 2400,
+      "image": "https://picsum.photos/seed/prop19/400/300",
+      "description": "Beautiful condo with river views. Modern amenities, secure parking, and close to downtown attractions."
+    },
+    {
+      "id": 20,
+      "title": "Vintage Apartment",
+      "city": "Boston",
+      "price": 1700,
+      "image": "https://picsum.photos/seed/prop20/400/300",
+      "description": "Character-filled apartment with vintage charm. High ceilings, large windows, and located in a historic district."
+    },
+    {
+      "id": 21,
+      "title": "Sunny Apartment",
+      "city": "San Diego",
+      "price": 1900,
+      "image": "https://picsum.photos/seed/prop21/400/300",
+      "description": "Bright and airy apartment with large windows. Close to beaches, parks, and vibrant nightlife."
+    },
+    {
+      "id": 22,
+      "title": "Contemporary Condo",
+      "city": "Austin",
+      "price": 2100,
+      "image": "https://picsum.photos/seed/prop22/400/300",
+      "description": "Sleek condo with modern design elements. Access to rooftop pool, fitness center, and communal lounge."
+    },
+    {
+      "id": 23,
+      "title": "Charming Bungalow",
+      "city": "Portland",
+      "price": 1600,
+      "image": "https://picsum.photos/seed/prop23/400/300",
+      "description": "Cozy bungalow with a front porch and garden. Located in a quiet neighborhood with easy access to downtown."
+    },
+    {
+      "id": 24,
+      "title": "High-Rise Apartment",
+      "city": "New York",
+      "price": 3200,
+      "image": "https://picsum.photos/seed/prop24/400/300",
+      "description": "Luxury high-rise living with stunning city views. Full-service building with concierge, gym, and rooftop terrace."
+    },
+    {
+      "id": 25,
+      "title": "Spacious Duplex",
+      "city": "Chicago",
+      "price": 2800,
+      "image": "https://picsum.photos/seed/prop25/400/300",
+      "description": "Large duplex with private entrance and garage. Ideal for families or roommates looking for extra space."
+    }
+  ]
+}

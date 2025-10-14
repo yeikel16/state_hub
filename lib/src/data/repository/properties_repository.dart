@@ -57,27 +57,4 @@ class PropertiesRepository {
       throw UnknownException('Unexpected error: $e');
     }
   }
-
-  Future<PropertyModel?> getPropertyById(int id) async {
-    try {
-      final result = await _api.getProperties();
-      try {
-        return result.items.firstWhere((property) => property.id == id);
-      } on StateError {
-        return null;
-      }
-    } on SocketException catch (e) {
-      throw NetworkException('No internet connection: ${e.message}');
-    } on HttpException catch (e) {
-      throw ServerException('HTTP error: ${e.message}');
-    } on FormatException catch (e) {
-      throw DataException('Invalid data format: ${e.message}');
-    } on PlatformException catch (e) {
-      throw DataException('Platform error: ${e.message}');
-    } on TimeoutException catch (e) {
-      throw NetworkException('Request timeout: ${e.message}');
-    } catch (e) {
-      throw UnknownException('Unexpected error: $e');
-    }
-  }
 }

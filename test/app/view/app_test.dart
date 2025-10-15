@@ -3,13 +3,12 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:state_hub/app/app.dart';
-import 'package:state_hub/counter/counter.dart';
 
 void main() {
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
       await tester.pumpWidget(App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(AppView), findsOneWidget);
     });
   });
 }

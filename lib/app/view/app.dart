@@ -39,12 +39,6 @@ class AppView extends StatelessWidget {
           themeMode: state.themeMode,
           theme: AppTheme.light(scheme: state.schemeSelected),
           darkTheme: AppTheme.dark(scheme: state.schemeSelected),
-          // theme: ThemeData(
-          //   appBarTheme: AppBarTheme(
-          //     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          //   ),
-          //   useMaterial3: true,
-          // ),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           routerConfig: appRouter,

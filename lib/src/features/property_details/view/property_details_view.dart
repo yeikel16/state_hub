@@ -10,8 +10,10 @@ class PropertyDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final priceFormatter =
-        NumberFormat.currency(symbol: r'$', decimalDigits: 0);
+    final priceFormatter = NumberFormat.currency(
+      symbol: r'$',
+      decimalDigits: 0,
+    );
 
     return Scaffold(
       body: CustomScrollView(
@@ -20,10 +22,13 @@ class PropertyDetailsView extends StatelessWidget {
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: property.image != null
-                  ? Hero(
-                    tag: 'tag-${property.image}',
-                    child: Image.network(
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (property.image != null)
+                    Hero(
+                      tag: 'tag-${property.image}',
+                      child: Image.network(
                         property.image!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
@@ -37,8 +42,9 @@ class PropertyDetailsView extends StatelessWidget {
                           );
                         },
                       ),
-                  )
-                  : ColoredBox(
+                    )
+                  else
+                    ColoredBox(
                       color: theme.colorScheme.surfaceContainerHighest,
                       child: Icon(
                         Icons.home,
@@ -46,96 +52,126 @@ class PropertyDetailsView extends StatelessWidget {
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.transparent,
+                          theme.colorScheme.surface.withValues(alpha: 0.8),
+                          theme.colorScheme.surface,
+                        ],
+                        stops: const [0.0, 0.5, 0.9, 1.0],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          property.title,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        onPressed: () {
-                          // TODO: Implement favorites
-                        },
-                        iconSize: 28,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        size: 20,
-                        color: theme.colorScheme.primary,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        property.city,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    theme.colorScheme.surface.withValues(alpha: 0),
+                    theme.colorScheme.surface,
+                  ],
+                  stops: const [0.0, 0.05],
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          priceFormatter.format(property.price),
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: theme.colorScheme.onPrimaryContainer,
+                        Expanded(
+                          child: Text(
+                            property.title,
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
+                        IconButton(
+                          icon: const Icon(Icons.favorite_border),
+                          onPressed: () {
+                            // TODO: Implement favorites
+                          },
+                          iconSize: 28,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          size: 20,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 4),
                         Text(
-                          ' /month',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer,
+                          property.city,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Description',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            priceFormatter.format(property.price),
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                          Text(
+                            ' /month',
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: theme.colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    property.description,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      height: 1.5,
+                    const SizedBox(height: 24),
+                    Text(
+                      'Description',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                ],
+                    const SizedBox(height: 8),
+                    Text(
+                      property.description,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             ),
           ),

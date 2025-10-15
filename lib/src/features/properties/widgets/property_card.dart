@@ -106,7 +106,7 @@ class PropertyCard extends StatelessWidget {
       height: 180,
       width: double.infinity,
       child: Hero(
-        tag: 'tag-${property.image}',
+        tag: 'tag-${property.id}',
         child: CachedNetworkImage(
           imageUrl: property.image!,
           fit: BoxFit.fill,

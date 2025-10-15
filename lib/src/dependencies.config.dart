@@ -18,7 +18,7 @@ import 'package:state_hub/src/data/repository/favorites_repository.dart'
     as _i751;
 import 'package:state_hub/src/data/repository/properties_repository.dart'
     as _i24;
-import 'package:state_hub/src/features/favorites/blocs/favorites_bloc/favorites_bloc.dart'
+import 'package:state_hub/src/features/favorites/bloc/favorites_bloc.dart'
     as _i535;
 import 'package:state_hub/src/features/properties/blocs/properties_bloc/properties_bloc.dart'
     as _i331;

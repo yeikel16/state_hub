@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:state_hub/src/data/models/models.dart';
+import 'package:state_hub/src/features/favorites/favorites.dart';
 
 class PropertyCard extends StatelessWidget {
   const PropertyCard({
@@ -63,12 +64,19 @@ class PropertyCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    '\$${property.price.toStringAsFixed(2)}',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '\$${property.price.toStringAsFixed(2)}',
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      FavoriteIconButton(property: property),
+                    ],
                   ),
                 ],
               ),

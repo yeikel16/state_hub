@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:state_hub/src/data/models/models.dart';
+import 'package:state_hub/src/features/favorites/favorites.dart';
 
 class PropertyDetailsView extends StatelessWidget {
   const PropertyDetailsView({required this.property, super.key});
@@ -104,13 +105,7 @@ class PropertyDetailsView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.favorite_border),
-                          onPressed: () {
-                            // TODO: Implement favorites
-                          },
-                          iconSize: 28,
-                        ),
+                        FavoriteIconButton(property: property),
                       ],
                     ),
                     const SizedBox(height: 8),

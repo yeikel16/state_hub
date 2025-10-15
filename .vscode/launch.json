@@ -17,6 +17,20 @@
       ]
     },
     {
+      "name": "Launch web dev",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_development.dart",
+      "args": [
+        "--flavor",
+        "development",
+        "--target",
+        "lib/main_development.dart",
+        "-d", "chrome",
+        "--web-port", "5050"
+      ]
+    },
+    {
       "name": "Launch staging",
       "request": "launch",
       "type": "dart",

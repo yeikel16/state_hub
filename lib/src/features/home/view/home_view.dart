@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:state_hub/app/routes/routes.dart';
+import 'package:state_hub/src/data/models/models.dart';
 import 'package:state_hub/src/features/properties/blocs/blocs.dart';
 import 'package:state_hub/src/features/properties/widgets/widgets.dart';
-import 'package:very_good_infinite_list/very_good_infinite_list.dart';
+import 'package:state_hub/src/widgets/widgets.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -198,154 +201,122 @@ class CityChip extends StatelessWidget {
 class PropertiesList extends StatelessWidget {
   const PropertiesList({super.key});
 
+  void _fetchNextPage(BuildContext context) {
+    final filterState = context.read<PropertiesFilterBloc>().state;
+    context.read<PropertiesBloc>().add(
+      LoadProperties(
+        query: filterState.searchQuery,
+        city: filterState.selectedCity,
+      ),
+    );
+  }
+
+  PagingState<int, PropertyModel> _toPagingState(PropertiesState state) {
+    return PagingState(
+      pages: state.properties.isEmpty ? null : [state.properties],
+      keys: state.properties.isEmpty ? null : [state.currentPage],
+      hasNextPage: !state.hasReachedMax,
+      isLoading: state.isLoading,
+      error: state.error,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PropertiesBloc, PropertiesState>(
-      builder: (context, state) {
-        if (state.properties.isEmpty) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.error != null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Error',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    state.error!,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton.icon(
-                    onPressed: () {
-                      final filterState = context
-                          .read<PropertiesFilterBloc>()
-                          .state;
-                      context.read<PropertiesBloc>().add(
-                        LoadProperties(
-                          query: filterState.searchQuery,
-                          city: filterState.selectedCity,
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.search_off,
-                  size: 64,
-                  color: Colors.grey[400],
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No properties found',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Try adjusting your search or filters',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
+      builder: (context, blocState) {
+        if (blocState.properties.isEmpty) {
+          return const EmptyState(
+            icon: Icons.search_off,
+            title: 'No properties found',
+            message: 'Try adjusting your search or filters',
           );
         }
 
-        return RefreshIndicator(
-          onRefresh: () async {
-            final filterState = context.read<PropertiesFilterBloc>().state;
-            context.read<PropertiesBloc>().add(
-              LoadProperties(
-                query: filterState.searchQuery,
-                city: filterState.selectedCity,
+        final pagingState = _toPagingState(blocState);
+
+        return ResponsiveBuilder(
+          builder: (context, sizingInformation) {
+            final isMobile =
+                sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+
+            if (isMobile) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  final filterState = context
+                      .read<PropertiesFilterBloc>()
+                      .state;
+                  context.read<PropertiesBloc>().add(
+                    LoadProperties(
+                      query: filterState.searchQuery,
+                      city: filterState.selectedCity,
+                    ),
+                  );
+                },
+                child: PagedListView<int, PropertyModel>(
+                  state: pagingState,
+                  fetchNextPage: () => _fetchNextPage(context),
+                  builderDelegate: PagedChildBuilderDelegate(
+                    itemBuilder: (context, property, index) => PropertyCard(
+                      property: property,
+                      onTap: () {
+                        PropertyDetailsRoute($extra: property).go(context);
+                      },
+                    ),
+                    firstPageErrorIndicatorBuilder: (context) => ErrorState(
+                      message: pagingState.error?.toString() ?? 'Unknown error',
+                      onRetry: () => _fetchNextPage(context),
+                    ),
+                    noItemsFoundIndicatorBuilder: (context) => const EmptyState(
+                      icon: Icons.search_off,
+                      title: 'No properties found',
+                      message: 'Try adjusting your search or filters',
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            // Grid layout for desktop/tablet
+            return RefreshIndicator(
+              onRefresh: () async {
+                final filterState = context.read<PropertiesFilterBloc>().state;
+                context.read<PropertiesBloc>().add(
+                  LoadProperties(
+                    query: filterState.searchQuery,
+                    city: filterState.selectedCity,
+                  ),
+                );
+              },
+              child: PagedGridView<int, PropertyModel>(
+                state: pagingState,
+                fetchNextPage: () => _fetchNextPage(context),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 450,
+                  mainAxisExtent: 360,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                builderDelegate: PagedChildBuilderDelegate(
+                  itemBuilder: (context, property, index) => PropertyCard(
+                    property: property,
+                    onTap: () {
+                      PropertyDetailsRoute($extra: property).go(context);
+                    },
+                  ),
+                  firstPageErrorIndicatorBuilder: (context) => ErrorState(
+                    message: pagingState.error?.toString() ?? 'Unknown error',
+                    onRetry: () => _fetchNextPage(context),
+                  ),
+                  noItemsFoundIndicatorBuilder: (context) => const EmptyState(
+                    icon: Icons.search_off,
+                    title: 'No properties found',
+                    message: 'Try adjusting your search or filters',
+                  ),
+                ),
               ),
             );
           },
-          child: InfiniteList(
-            padding: const EdgeInsets.only(bottom: 24),
-            itemCount: state.properties.length,
-            isLoading: state.isLoading,
-            hasReachedMax: state.hasReachedMax,
-            onFetchData: () {
-              final filterState = context.read<PropertiesFilterBloc>().state;
-              context.read<PropertiesBloc>().add(
-                LoadProperties(
-                  query: filterState.searchQuery,
-                  city: filterState.selectedCity,
-                ),
-              );
-            },
-            itemBuilder: (context, index) {
-              final property = state.properties[index];
-              return PropertyCard(
-                property: property,
-                onTap: () async {
-                  PropertyDetailsRoute($extra: property).go(context);
-                },
-              );
-            },
-            loadingBuilder: (context) => const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            errorBuilder: (context) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      state.error ?? 'Error loading more properties',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton.icon(
-                      onPressed: () {
-                        final filterState = context
-                            .read<PropertiesFilterBloc>()
-                            .state;
-                        context.read<PropertiesBloc>().add(
-                          LoadProperties(
-                            query: filterState.searchQuery,
-                            city: filterState.selectedCity,
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            emptyBuilder: (context) => const SizedBox.shrink(),
-          ),
         );
       },
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:state_hub/app/routes/app_routes.dart';
 
 class HomeShellScaffold extends StatelessWidget {
@@ -37,43 +38,93 @@ class HomeShellScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     final location = GoRouterState.of(context).uri.path;
     final currentIndex = _getCurrentIndex(location);
 
-    return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentIndex,
-        onDestinationSelected: (index) => _onTabChanged(context, index),
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.house_outlined),
-            selectedIcon: Icon(
-              Icons.house_rounded,
-              color: theme.colorScheme.primary,
+    return ResponsiveBuilder(
+      builder: (context, sizingInformation) {
+        final isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+
+        if (isMobile) {
+          return Scaffold(
+            backgroundColor: theme.colorScheme.surface,
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: currentIndex,
+              onDestinationSelected: (index) => _onTabChanged(context, index),
+              destinations: [
+                NavigationDestination(
+                  icon: const Icon(Icons.house_outlined),
+                  selectedIcon: Icon(
+                    Icons.house_rounded,
+                    color: theme.colorScheme.primary,
+                  ),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.favorite_border),
+                  selectedIcon: Icon(
+                    Icons.favorite,
+                    color: theme.colorScheme.primary,
+                  ),
+                  label: 'Favorites',
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.settings),
+                  selectedIcon: Icon(
+                    Icons.settings,
+                    color: theme.colorScheme.primary,
+                  ),
+                  label: 'Settings',
+                ),
+              ],
             ),
-            label: 'Home',
+            body: child,
+          );
+        }
+
+        // Desktop/Tablet layout with NavigationRail
+        return Scaffold(
+          backgroundColor: theme.colorScheme.surface,
+          body: Row(
+            children: [
+              NavigationRail(
+                selectedIndex: currentIndex,
+                onDestinationSelected: (index) => _onTabChanged(context, index),
+                labelType: NavigationRailLabelType.all,
+                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                destinations: [
+                  NavigationRailDestination(
+                    icon: const Icon(Icons.house_outlined),
+                    selectedIcon: Icon(
+                      Icons.house_rounded,
+                      color: theme.colorScheme.primary,
+                    ),
+                    label: const Text('Home'),
+                  ),
+                  NavigationRailDestination(
+                    icon: const Icon(Icons.favorite_border),
+                    selectedIcon: Icon(
+                      Icons.favorite,
+                      color: theme.colorScheme.primary,
+                    ),
+                    label: const Text('Favorites'),
+                  ),
+                  NavigationRailDestination(
+                    icon: const Icon(Icons.settings),
+                    selectedIcon: Icon(
+                      Icons.settings,
+                      color: theme.colorScheme.primary,
+                    ),
+                    label: const Text('Settings'),
+                  ),
+                ],
+              ),
+              const VerticalDivider(thickness: 1, width: 1),
+              Expanded(child: child),
+            ],
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.favorite_border),
-            selectedIcon: Icon(
-              Icons.favorite,
-              color: theme.colorScheme.primary,
-            ),
-            label: 'Favorites',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.settings),
-            selectedIcon: Icon(
-              Icons.settings,
-              color: theme.colorScheme.primary,
-            ),
-            label: 'Settings',
-          ),
-        ],
-      ),
-      body: child,
+        );
+      },
     );
   }
 }

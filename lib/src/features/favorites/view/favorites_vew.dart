@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:state_hub/app/routes/routes.dart';
 import 'package:state_hub/src/features/favorites/bloc/favorites_bloc.dart';
 import 'package:state_hub/src/features/properties/widgets/widgets.dart';
+import 'package:state_hub/src/widgets/widgets.dart';
 
 class FavoritePropertiesView extends StatelessWidget {
   const FavoritePropertiesView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Favorites'),
@@ -48,83 +48,76 @@ class FavoritePropertiesView extends StatelessWidget {
           }
 
           if (state.error != null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: theme.colorScheme.error,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Error',
-                    style: theme.textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    state.error!,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton.icon(
-                    onPressed: () {
-                      context.read<FavoritesBloc>().add(const LoadFavorites());
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
-                  ),
-                ],
-              ),
+            return ErrorState(
+              message: state.error!,
+              onRetry: () {
+                context.read<FavoritesBloc>().add(const LoadFavorites());
+              },
             );
           }
 
           if (state.favorites.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.favorite_border,
-                    size: 64,
-                    color: Colors.grey[400],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No favorites yet',
-                    style: theme.textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Start adding properties to your favorites',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
-              ),
+            return const EmptyState(
+              icon: Icons.favorite_border,
+              title: 'No favorites yet',
+              message: 'Start adding properties to your favorites',
             );
           }
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<FavoritesBloc>().add(const LoadFavorites());
-            },
-            child: ListView.builder(
-              itemCount: state.favorites.length,
-              padding: const EdgeInsets.only(top: 8),
-              itemBuilder: (context, index) {
-                final property = state.favorites[index];
-                return PropertyCard(
-                  property: property,
-                  onTap: () {
-                    FavoritePropertyDetailsRoute($extra: property).go(context);
+          return ResponsiveBuilder(
+            builder: (context, sizingInformation) {
+              final isMobile =
+                sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+
+              if (isMobile) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<FavoritesBloc>().add(const LoadFavorites());
                   },
+                  child: ListView.builder(
+                    itemCount: state.favorites.length,
+                    padding: const EdgeInsets.only(top: 8),
+                    itemBuilder: (context, index) {
+                      final property = state.favorites[index];
+                      return PropertyCard(
+                        property: property,
+                        onTap: () {
+                          FavoritePropertyDetailsRoute($extra: property)
+                            .go(context);
+                        },
+                      );
+                    },
+                  ),
                 );
-              },
-            ),
+              }
+
+              // Grid layout for desktop/tablet
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<FavoritesBloc>().add(const LoadFavorites());
+                },
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 400,
+                    mainAxisExtent: 360,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: state.favorites.length,
+                  itemBuilder: (context, index) {
+                    final property = state.favorites[index];
+                    return PropertyCard(
+                      property: property,
+                      onTap: () {
+                        FavoritePropertyDetailsRoute($extra: property)
+                          .go(context);
+                      },
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),

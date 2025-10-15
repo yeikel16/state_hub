@@ -24,35 +24,51 @@ final appRouter = GoRouter(
   errorBuilder: (context, state) => const NotFoundPage(),
 );
 
-@TypedShellRoute<HomeShellRoute>(
-  routes: [
-    TypedGoRoute<HomeRoute>(
-      path: '/home',
+@TypedStatefulShellRoute<HomeShellRoute>(
+  branches: [
+    TypedStatefulShellBranch(
       routes: [
-        TypedGoRoute<PropertyDetailsRoute>(
-          path: 'details',
+        TypedGoRoute<HomeRoute>(
+          path: '/home',
+          routes: [
+            TypedGoRoute<PropertyDetailsRoute>(
+              path: 'details',
+            ),
+          ],
         ),
       ],
     ),
-    TypedGoRoute<FavoritePropertiesRoute>(
-      path: '/favorites',
+    TypedStatefulShellBranch(
       routes: [
-        TypedGoRoute<FavoritePropertyDetailsRoute>(
-          path: 'details',
+        TypedGoRoute<FavoritePropertiesRoute>(
+          path: '/favorites',
+          routes: [
+            TypedGoRoute<FavoritePropertyDetailsRoute>(
+              path: 'details',
+            ),
+          ],
         ),
       ],
     ),
-    TypedGoRoute<SettingsRoute>(
-      path: '/settings',
+    TypedStatefulShellBranch(
+      routes: [
+        TypedGoRoute<SettingsRoute>(
+          path: '/settings',
+        ),
+      ],
     ),
   ],
 )
-class HomeShellRoute extends ShellRouteData {
+class HomeShellRoute extends StatefulShellRouteData {
   HomeShellRoute();
 
   @override
-  Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
-    return HomeShellScaffold(child: navigator);
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    StatefulNavigationShell navigationShell,
+  ) {
+    return HomeShellScaffold(child: navigationShell);
   }
 }
 

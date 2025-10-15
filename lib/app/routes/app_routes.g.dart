@@ -8,32 +8,48 @@ part of 'app_routes.dart';
 
 List<RouteBase> get $appRoutes => [$homeShellRoute];
 
-RouteBase get $homeShellRoute => ShellRouteData.$route(
+RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
   factory: $HomeShellRouteExtension._fromState,
-  routes: [
-    GoRouteData.$route(
-      path: '/home',
-      factory: $HomeRoute._fromState,
+  branches: [
+    StatefulShellBranchData.$branch(
       routes: [
         GoRouteData.$route(
-          path: 'details',
-          parentNavigatorKey: PropertyDetailsRoute.$parentNavigatorKey,
-          factory: $PropertyDetailsRoute._fromState,
+          path: '/home',
+          factory: $HomeRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'details',
+              parentNavigatorKey: PropertyDetailsRoute.$parentNavigatorKey,
+              factory: $PropertyDetailsRoute._fromState,
+            ),
+          ],
         ),
       ],
     ),
-    GoRouteData.$route(
-      path: '/favorites',
-      factory: $FavoritePropertiesRoute._fromState,
+    StatefulShellBranchData.$branch(
       routes: [
         GoRouteData.$route(
-          path: 'details',
-          parentNavigatorKey: FavoritePropertyDetailsRoute.$parentNavigatorKey,
-          factory: $FavoritePropertyDetailsRoute._fromState,
+          path: '/favorites',
+          factory: $FavoritePropertiesRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'details',
+              parentNavigatorKey:
+                  FavoritePropertyDetailsRoute.$parentNavigatorKey,
+              factory: $FavoritePropertyDetailsRoute._fromState,
+            ),
+          ],
         ),
       ],
     ),
-    GoRouteData.$route(path: '/settings', factory: $SettingsRoute._fromState),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/settings',
+          factory: $SettingsRoute._fromState,
+        ),
+      ],
+    ),
   ],
 );
 

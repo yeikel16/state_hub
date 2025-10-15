@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:state_hub/src/data/models/models.dart';
 
@@ -93,16 +94,21 @@ class PropertyCard extends StatelessWidget {
       );
     }
 
-    return Hero(
-      tag: 'tag-${property.image}',
-      child: Image.network(
-        property.image!,
-        height: 180,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            height: 180,
+    return SizedBox(
+      height: 180,
+      width: double.infinity,
+      child: Hero(
+        tag: 'tag-${property.image}',
+        child: CachedNetworkImage(
+          imageUrl: property.image!,
+          fit: BoxFit.fill,
+          placeholder: (context, url) => Container(
+            color: Colors.grey[200],
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          errorWidget: (context, url, error) => Container(
             color: Colors.grey[300],
             child: const Center(
               child: Icon(
@@ -111,23 +117,8 @@ class PropertyCard extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-          );
-        },
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Container(
-            height: 180,
-            color: Colors.grey[200],
-            child: Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }

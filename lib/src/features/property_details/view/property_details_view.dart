@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:state_hub/src/data/models/models.dart';
@@ -28,19 +29,23 @@ class PropertyDetailsView extends StatelessWidget {
                   if (property.image != null)
                     Hero(
                       tag: 'tag-${property.image}',
-                      child: Image.network(
-                        property.image!,
+                      child: CachedNetworkImage(
+                        imageUrl: property.image!,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ColoredBox(
-                            color: theme.colorScheme.surfaceContainerHighest,
-                            child: Icon(
-                              Icons.home,
-                              size: 100,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                          );
-                        },
+                        placeholder: (context, url) => ColoredBox(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => ColoredBox(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          child: Icon(
+                            Icons.home,
+                            size: 100,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
                       ),
                     )
                   else

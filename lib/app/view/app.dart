@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:state_hub/app/routes/routes.dart';
+import 'package:state_hub/app/theme/theme.dart';
 import 'package:state_hub/l10n/l10n.dart';
 import 'package:state_hub/src/features/favorites/bloc/favorites_bloc.dart';
 
@@ -10,8 +11,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<FavoritesBloc>()..add(const LoadFavorites()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              GetIt.I<FavoritesBloc>()..add(const LoadFavorites()),
+        ),
+        BlocProvider(
+          create: (context) => GetIt.I<AppThemeCubit>(),
+        ),
+      ],
       child: const AppView(),
     );
   }
@@ -24,16 +33,23 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        ),
-        useMaterial3: true,
-      ),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routerConfig: appRouter,
+    return BlocBuilder<AppThemeCubit, AppThemeState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          themeMode: state.themeMode,
+          theme: AppTheme.light(scheme: state.schemeSelected),
+          darkTheme: AppTheme.dark(scheme: state.schemeSelected),
+          // theme: ThemeData(
+          //   appBarTheme: AppBarTheme(
+          //     backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          //   ),
+          //   useMaterial3: true,
+          // ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: appRouter,
+        );
+      },
     );
   }
 }

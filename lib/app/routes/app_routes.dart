@@ -76,7 +76,7 @@ class PropertyDetailsRoute extends GoRouteData with $PropertyDetailsRoute {
     return buildPageWithFadeTransition(
       context: context,
       state: state,
-      child: const PropertyDetailsPage(),
+      child: PropertyDetailsPage(property: $extra),
     );
   }
 }

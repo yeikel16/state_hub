@@ -93,39 +93,42 @@ class PropertyCard extends StatelessWidget {
       );
     }
 
-    return Image.network(
-      property.image!,
-      height: 180,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          height: 180,
-          color: Colors.grey[300],
-          child: const Center(
-            child: Icon(
-              Icons.broken_image,
-              size: 64,
-              color: Colors.grey,
+    return Hero(
+      tag: 'tag-${property.image}',
+      child: Image.network(
+        property.image!,
+        height: 180,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            height: 180,
+            color: Colors.grey[300],
+            child: const Center(
+              child: Icon(
+                Icons.broken_image,
+                size: 64,
+                color: Colors.grey,
+              ),
             ),
-          ),
-        );
-      },
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Container(
-          height: 180,
-          color: Colors.grey[200],
-          child: Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
+          );
+        },
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            height: 180,
+            color: Colors.grey[200],
+            child: Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

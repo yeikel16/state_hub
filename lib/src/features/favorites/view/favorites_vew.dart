@@ -23,7 +23,7 @@ class FavoritePropertiesView extends StatelessWidget {
               return IconButton(
                 icon: const Icon(Icons.delete_outline),
                 onPressed: () {
-                  // TODO: Implement clear all favorites
+                  context.read<FavoritesBloc>().add(const ClearAllFavorites());
                 },
                 tooltip: 'Clear all favorites',
               );
@@ -31,7 +31,17 @@ class FavoritePropertiesView extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<FavoritesBloc, FavoritesState>(
+      body: BlocConsumer<FavoritesBloc, FavoritesState>(
+        listener: (context, state) {
+          final hasError = state.error != null;
+          if (hasError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error ?? 'An unexpected error occurred'),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());

@@ -16,6 +16,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
        super(const FavoritesState()) {
     on<LoadFavorites>(_onLoadFavorites);
     on<ToggleFavorite>(_onToggleFavorite);
+    on<ClearAllFavorites>(_onClearAllFavorites);
   }
 
   final FavoritesRepository _favoritesRepository;
@@ -90,5 +91,32 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     }
 
     add(const LoadFavorites());
+  }
+
+  Future<void> _onClearAllFavorites(
+    ClearAllFavorites event,
+    Emitter<FavoritesState> emit,
+  ) async {
+    final oldState = state;
+
+    emit(state.copyWith(favorites: const [], error: () => null));
+
+    try {
+      await _favoritesRepository.clearFavorites();
+    } on AppException catch (e) {
+      emit(
+        state.copyWith(
+          favorites: oldState.favorites,
+          error: () => e.message,
+        ),
+      );
+    } on Exception catch (e) {
+      emit(
+        state.copyWith(
+          favorites: oldState.favorites,
+          error: () => 'An unexpected error occurred: $e',
+        ),
+      );
+    }
   }
 }

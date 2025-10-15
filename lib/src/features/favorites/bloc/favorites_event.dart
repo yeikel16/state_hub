@@ -19,3 +19,7 @@ final class ToggleFavorite extends FavoritesEvent {
   @override
   List<Object?> get props => [property];
 }
+
+final class ClearAllFavorites extends FavoritesEvent {
+  const ClearAllFavorites();
+}

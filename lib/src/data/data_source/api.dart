@@ -79,6 +79,8 @@ class LocalPropertiesApi extends PropertiesApi {
     final paginatedItems = startIndex < filteredProperties.length
         ? filteredProperties.sublist(startIndex, endIndex)
         : <PropertyModel>[];
+    
+    await Future<void>.delayed(const Duration(seconds: 3));
 
     return PaginateModel<PropertyModel>(
       items: paginatedItems,

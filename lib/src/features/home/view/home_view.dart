@@ -11,23 +11,55 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(140),
-        child: SafeArea(child: SearchAndFilters()),
-      ),
-      body: BlocListener<PropertiesFilterBloc, PropertiesFilterState>(
-        listenWhen: (previous, current) =>
-            previous.searchQuery != current.searchQuery ||
-            previous.selectedCity != current.selectedCity,
-        listener: (context, filterState) {
-          context.read<PropertiesBloc>().add(
-            LoadProperties(
-              query: filterState.searchQuery,
-              city: filterState.selectedCity,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              pinned: true,
+              title: const Text('StateHub'),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(150),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SearchAndFilters(),
+                    BlocBuilder<PropertiesBloc, PropertiesState>(
+                      builder: (context, state) {
+                        final filterState = context.select(
+                          (PropertiesFilterBloc bloc) => bloc.state,
+                        );
+
+                        final filtersChanged =
+                            state.query != filterState.searchQuery ||
+                            state.city != filterState.selectedCity;
+                        if (state.isLoading && filtersChanged) {
+                          return const LinearProgressIndicator();
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
-          );
+          ];
         },
-        child: const PropertiesList(),
+        body: BlocListener<PropertiesFilterBloc, PropertiesFilterState>(
+          listenWhen: (previous, current) =>
+              previous.searchQuery != current.searchQuery ||
+              previous.selectedCity != current.selectedCity,
+          listener: (context, filterState) {
+            context.read<PropertiesBloc>().add(
+              LoadProperties(
+                query: filterState.searchQuery,
+                city: filterState.selectedCity,
+              ),
+            );
+          },
+          child: const PropertiesList(),
+        ),
       ),
     );
   }
@@ -254,6 +286,7 @@ class PropertiesList extends StatelessWidget {
             );
           },
           child: InfiniteList(
+            padding: const EdgeInsets.only(bottom: 24),
             itemCount: state.properties.length,
             isLoading: state.isLoading,
             hasReachedMax: state.hasReachedMax,

@@ -30,7 +30,7 @@ final appRouter = GoRouter(
       path: '/home',
       routes: [
         TypedGoRoute<PropertyDetailsRoute>(
-          path: '/details',
+          path: 'details',
         ),
       ],
     ),

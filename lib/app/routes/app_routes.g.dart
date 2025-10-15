@@ -16,7 +16,7 @@ RouteBase get $homeShellRoute => ShellRouteData.$route(
       factory: $HomeRoute._fromState,
       routes: [
         GoRouteData.$route(
-          path: '/details',
+          path: 'details',
           parentNavigatorKey: PropertyDetailsRoute.$parentNavigatorKey,
           factory: $PropertyDetailsRoute._fromState,
         ),
@@ -61,7 +61,7 @@ mixin $PropertyDetailsRoute on GoRouteData {
   PropertyDetailsRoute get _self => this as PropertyDetailsRoute;
 
   @override
-  String get location => GoRouteData.$location('/details');
+  String get location => GoRouteData.$location('/home/details');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);

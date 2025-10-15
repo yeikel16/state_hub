@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:state_hub/app/language/language.dart';
 import 'package:state_hub/app/routes/routes.dart';
 import 'package:state_hub/app/theme/theme.dart';
 import 'package:state_hub/l10n/l10n.dart';
@@ -20,6 +21,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => GetIt.I<AppThemeCubit>(),
         ),
+        BlocProvider(
+          create: (context) => GetIt.I<AppLanguageCubit>(),
+        ),
       ],
       child: const AppView(),
     );
@@ -34,14 +38,19 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppThemeCubit, AppThemeState>(
-      builder: (context, state) {
-        return MaterialApp.router(
-          themeMode: state.themeMode,
-          theme: AppTheme.light(scheme: state.schemeSelected),
-          darkTheme: AppTheme.dark(scheme: state.schemeSelected),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          routerConfig: appRouter,
+      builder: (context, themeState) {
+        return BlocBuilder<AppLanguageCubit, Locale>(
+          builder: (context, locale) {
+            return MaterialApp.router(
+              locale: locale,
+              themeMode: themeState.themeMode,
+              theme: AppTheme.light(scheme: themeState.schemeSelected),
+              darkTheme: AppTheme.dark(scheme: themeState.schemeSelected),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              routerConfig: appRouter,
+            );
+          },
         );
       },
     );

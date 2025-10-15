@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:state_hub/l10n/l10n.dart';
 import 'package:state_hub/src/data/models/models.dart';
 import 'package:state_hub/src/features/favorites/favorites.dart';
 
@@ -12,7 +13,9 @@ class PropertyDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
+
     final priceFormatter = NumberFormat.currency(
       symbol: r'$',
       decimalDigits: 0,
@@ -164,7 +167,7 @@ class PropertyDetailsView extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Description',
+                      l10n.description,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -190,14 +193,16 @@ class PropertyDetailsView extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: FilledButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-               content: Text('Calling the Owner'),
-              ));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n.callingTheOwner),
+                ),
+              );
             },
             style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            child: const Text('Contact Owner'),
+            child: Text(l10n.contactOwner),
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:state_hub/app/routes/routes.dart';
+import 'package:state_hub/l10n/l10n.dart';
 import 'package:state_hub/src/features/favorites/bloc/favorites_bloc.dart';
 import 'package:state_hub/src/features/properties/widgets/widgets.dart';
 import 'package:state_hub/src/widgets/widgets.dart';
@@ -11,9 +12,11 @@ class FavoritePropertiesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorites'),
+        title: Text(l10n.favorites),
         actions: [
           BlocBuilder<FavoritesBloc, FavoritesState>(
             builder: (context, state) {
@@ -25,7 +28,7 @@ class FavoritePropertiesView extends StatelessWidget {
                 onPressed: () {
                   context.read<FavoritesBloc>().add(const ClearAllFavorites());
                 },
-                tooltip: 'Clear all favorites',
+                tooltip: l10n.clearAllFavorites,
               );
             },
           ),
@@ -37,7 +40,7 @@ class FavoritePropertiesView extends StatelessWidget {
           if (hasError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.error ?? 'An unexpected error occurred'),
+                content: Text(state.error ?? l10n.anUnexpectedErrorOccurred),
               ),
             );
           }
@@ -57,17 +60,17 @@ class FavoritePropertiesView extends StatelessWidget {
           }
 
           if (state.favorites.isEmpty) {
-            return const EmptyState(
+            return EmptyState(
               icon: Icons.favorite_border,
-              title: 'No favorites yet',
-              message: 'Start adding properties to your favorites',
+              title: l10n.noFavoritesYet,
+              message: l10n.saveYourFavoritePropertiesMessage,
             );
           }
 
           return ResponsiveBuilder(
             builder: (context, sizingInformation) {
               final isMobile =
-                sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+                  sizingInformation.deviceScreenType == DeviceScreenType.mobile;
 
               if (isMobile) {
                 return RefreshIndicator(
@@ -82,8 +85,9 @@ class FavoritePropertiesView extends StatelessWidget {
                       return PropertyCard(
                         property: property,
                         onTap: () {
-                          FavoritePropertyDetailsRoute($extra: property)
-                            .go(context);
+                          FavoritePropertyDetailsRoute(
+                            $extra: property,
+                          ).go(context);
                         },
                       );
                     },
@@ -110,8 +114,9 @@ class FavoritePropertiesView extends StatelessWidget {
                     return PropertyCard(
                       property: property,
                       onTap: () {
-                        FavoritePropertyDetailsRoute($extra: property)
-                          .go(context);
+                        FavoritePropertyDetailsRoute(
+                          $extra: property,
+                        ).go(context);
                       },
                     );
                   },

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:state_hub/app/routes/routes.dart';
+import 'package:state_hub/l10n/l10n.dart';
 import 'package:state_hub/src/data/models/models.dart';
 import 'package:state_hub/src/features/properties/blocs/blocs.dart';
 import 'package:state_hub/src/features/properties/widgets/widgets.dart';
@@ -73,6 +74,7 @@ class SearchAndFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
 
     return Container(
@@ -91,7 +93,7 @@ class SearchAndFilters extends StatelessWidget {
         children: [
           TextField(
             decoration: InputDecoration(
-              hintText: 'Search properties...',
+              hintText: l10n.searchProperties,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -131,7 +133,7 @@ class SearchAndFilters extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     CityChip(
-                      label: 'All',
+                      label: l10n.all,
                       isSelected: state.selectedCity == null,
                       onTap: () {
                         context.read<PropertiesFilterBloc>().add(
@@ -223,13 +225,14 @@ class PropertiesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return BlocBuilder<PropertiesBloc, PropertiesState>(
       builder: (context, blocState) {
         if (blocState.properties.isEmpty) {
-          return const EmptyState(
+          return EmptyState(
             icon: Icons.search_off,
-            title: 'No properties found',
-            message: 'Try adjusting your search or filters',
+            title: l10n.noPropertiesFound,
+            message: l10n.tryAdjustingFilters,
           );
         }
 
@@ -264,13 +267,14 @@ class PropertiesList extends StatelessWidget {
                       },
                     ),
                     firstPageErrorIndicatorBuilder: (context) => ErrorState(
-                      message: pagingState.error?.toString() ?? 'Unknown error',
+                      message:
+                          pagingState.error?.toString() ?? l10n.unknownError,
                       onRetry: () => _fetchNextPage(context),
                     ),
-                    noItemsFoundIndicatorBuilder: (context) => const EmptyState(
+                    noItemsFoundIndicatorBuilder: (context) => EmptyState(
                       icon: Icons.search_off,
-                      title: 'No properties found',
-                      message: 'Try adjusting your search or filters',
+                      title: l10n.noPropertiesFound,
+                      message: l10n.tryAdjustingFilters,
                     ),
                   ),
                 ),
@@ -305,13 +309,13 @@ class PropertiesList extends StatelessWidget {
                     },
                   ),
                   firstPageErrorIndicatorBuilder: (context) => ErrorState(
-                    message: pagingState.error?.toString() ?? 'Unknown error',
+                    message: pagingState.error?.toString() ?? l10n.unknownError,
                     onRetry: () => _fetchNextPage(context),
                   ),
-                  noItemsFoundIndicatorBuilder: (context) => const EmptyState(
+                  noItemsFoundIndicatorBuilder: (context) => EmptyState(
                     icon: Icons.search_off,
-                    title: 'No properties found',
-                    message: 'Try adjusting your search or filters',
+                    title: l10n.noPropertiesFound,
+                    message: l10n.tryAdjustingFilters,
                   ),
                 ),
               ),

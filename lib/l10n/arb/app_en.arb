@@ -1,7 +1,41 @@
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+  "@@locale": "en",
+  "all": "All",
+  "anUnexpectedErrorOccurred": "An unexpected error occurred",
+  "appearance": "Appearance",
+  "appTitle": "StateHub",
+  "callingTheOwner": "Calling the Owner",
+  "cancel": "Cancel",
+  "clearAllFavorites": "Clear all favorites",
+  "colorScheme": "Color Scheme",
+  "contactOwner": "Contact Owner",
+  "dark": "Dark",
+  "description": "Description",
+  "english": "English",
+  "error": "Error",
+  "errorLoadingProperties": "Error loading more properties",
+  "favorites": "Favorites",
+  "followSystemTheme": "Follow system theme (currently {theme})",
+  "@followSystemTheme": {
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
     }
+  },
+  "home": "Home",
+  "language": "Language",
+  "light": "Light",
+  "noFavoritesYet": "Searching for the perfect place?",
+  "noPropertiesFound": "No properties found",
+  "retry": "Retry",
+  "saveYourFavoritePropertiesMessage": "Save your favorite properties to compare and find them easily.",
+  "searchProperties": "Search properties...",
+  "selectColorScheme": "Select Color Scheme",
+  "settings": "Settings",
+  "spanish": "Spanish",
+  "system": "System",
+  "tapToChangeColorScheme": "Tap to change color scheme",
+  "tryAdjustingFilters": "Try adjusting your search or filters",
+  "unknownError": "Unknown error"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:state_hub/app/routes/app_routes.dart';
+import 'package:state_hub/l10n/l10n.dart';
 
 class HomeShellScaffold extends StatelessWidget {
   const HomeShellScaffold({
@@ -38,12 +39,14 @@ class HomeShellScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final location = GoRouterState.of(context).uri.path;
     final currentIndex = _getCurrentIndex(location);
 
     return ResponsiveBuilder(
       builder: (context, sizingInformation) {
-        final isMobile = sizingInformation.deviceScreenType == DeviceScreenType.mobile;
+        final isMobile =
+            sizingInformation.deviceScreenType == DeviceScreenType.mobile;
 
         if (isMobile) {
           return Scaffold(
@@ -58,7 +61,7 @@ class HomeShellScaffold extends StatelessWidget {
                     Icons.house_rounded,
                     color: theme.colorScheme.primary,
                   ),
-                  label: 'Home',
+                  label: l10n.home,
                 ),
                 NavigationDestination(
                   icon: const Icon(Icons.favorite_border),
@@ -66,7 +69,7 @@ class HomeShellScaffold extends StatelessWidget {
                     Icons.favorite,
                     color: theme.colorScheme.primary,
                   ),
-                  label: 'Favorites',
+                  label: l10n.favorites,
                 ),
                 NavigationDestination(
                   icon: const Icon(Icons.settings),
@@ -74,7 +77,7 @@ class HomeShellScaffold extends StatelessWidget {
                     Icons.settings,
                     color: theme.colorScheme.primary,
                   ),
-                  label: 'Settings',
+                  label: l10n.settings,
                 ),
               ],
             ),
@@ -99,7 +102,7 @@ class HomeShellScaffold extends StatelessWidget {
                       Icons.house_rounded,
                       color: theme.colorScheme.primary,
                     ),
-                    label: const Text('Home'),
+                    label: Text(l10n.home),
                   ),
                   NavigationRailDestination(
                     icon: const Icon(Icons.favorite_border),
@@ -107,7 +110,7 @@ class HomeShellScaffold extends StatelessWidget {
                       Icons.favorite,
                       color: theme.colorScheme.primary,
                     ),
-                    label: const Text('Favorites'),
+                    label: Text(l10n.favorites),
                   ),
                   NavigationRailDestination(
                     icon: const Icon(Icons.settings),
@@ -115,7 +118,7 @@ class HomeShellScaffold extends StatelessWidget {
                       Icons.settings,
                       color: theme.colorScheme.primary,
                     ),
-                    label: const Text('Settings'),
+                    label: Text(l10n.settings),
                   ),
                 ],
               ),

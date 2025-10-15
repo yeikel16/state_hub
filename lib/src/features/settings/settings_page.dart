@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:state_hub/app/language/language.dart';
 import 'package:state_hub/app/theme/cubit/app_theme_cubit.dart';
+import 'package:state_hub/l10n/l10n.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(l10n.settings),
       ),
       body: const SettingsView(),
     );
@@ -40,6 +44,7 @@ class ThemeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +52,7 @@ class ThemeSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
-            'Appearance',
+            l10n.appearance,
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
@@ -65,16 +70,14 @@ class ThemeSection extends StatelessWidget {
               },
               child: Column(
                 children: [
-                  const RadioListTile<ThemeMode>(
-                    title: Text('Light'),
-                    subtitle: Text('Use light theme'),
-                    secondary: Icon(Icons.light_mode),
+                  RadioListTile<ThemeMode>(
+                    title: Text(l10n.light),
+                    secondary: const Icon(Icons.light_mode),
                     value: ThemeMode.light,
                   ),
-                  const RadioListTile<ThemeMode>(
-                    title: Text('Dark'),
-                    subtitle: Text('Use dark theme'),
-                    secondary: Icon(Icons.dark_mode),
+                  RadioListTile<ThemeMode>(
+                    title: Text(l10n.dark),
+                    secondary: const Icon(Icons.dark_mode),
                     value: ThemeMode.dark,
                   ),
                   Builder(
@@ -83,14 +86,12 @@ class ThemeSection extends StatelessWidget {
                         context,
                       );
                       final currentTheme = brightness == Brightness.dark
-                          ? 'Dark'
-                          : 'Light';
+                          ? l10n.dark
+                          : l10n.light;
 
                       return RadioListTile<ThemeMode>(
-                        title: const Text('System'),
-                        subtitle: Text(
-                          'Follow system theme (currently $currentTheme)',
-                        ),
+                        title: Text(l10n.system),
+                        subtitle: Text(l10n.followSystemTheme(currentTheme)),
                         secondary: const Icon(Icons.brightness_auto),
                         value: ThemeMode.system,
                       );
@@ -112,6 +113,7 @@ class ColorSchemeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +121,7 @@ class ColorSchemeSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
-            'Color Scheme',
+            l10n.colorScheme,
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
@@ -136,7 +138,7 @@ class ColorSchemeSection extends StatelessWidget {
               title: Text(
                 state.schemeSelected.name.replaceAll('_', ' '),
               ),
-              subtitle: const Text('Tap to change color scheme'),
+              subtitle: Text(l10n.tapToChangeColorScheme),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () async {
                 await _showColorSchemeDialog(context, state);
@@ -152,12 +154,14 @@ class ColorSchemeSection extends StatelessWidget {
     BuildContext context,
     AppThemeState state,
   ) {
+    final l10n = context.l10n;
+
     return showDialog<void>(
       context: context,
       builder: (dialogContext) => Builder(
         builder: (context) {
           return AlertDialog(
-            title: const Text('Select Color Scheme'),
+            title: Text(l10n.selectColorScheme),
             content: SizedBox(
               width: double.maxFinite,
               child: Builder(
@@ -215,7 +219,7 @@ class ColorSchemeSection extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('Cancel'),
+                child: Text(l10n.cancel),
               ),
             ],
           );
@@ -231,6 +235,7 @@ class LanguageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,22 +243,37 @@ class LanguageSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
-            'Language',
+            l10n.language,
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        ListTile(
-          leading: const Icon(Icons.language),
-          title: const Text('English'),
-          subtitle: const Text('App language'),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Language selection coming soon!'),
+        BlocBuilder<AppLanguageCubit, Locale>(
+          builder: (context, locale) {
+            return RadioGroup<String>(
+              groupValue: locale.languageCode,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<AppLanguageCubit>().changeLanguage(
+                    Locale(value),
+                  );
+                }
+              },
+              child: Column(
+                children: [
+                  RadioListTile<String>(
+                    title: Text(l10n.english),
+                    secondary: const Icon(Icons.language),
+                    value: 'en',
+                  ),
+                  RadioListTile<String>(
+                    title: Text(l10n.spanish),
+                    secondary: const Icon(Icons.language),
+                    value: 'es',
+                  ),
+                ],
               ),
             );
           },

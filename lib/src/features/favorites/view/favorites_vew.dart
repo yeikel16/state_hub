@@ -120,7 +120,7 @@ class FavoritePropertiesView extends StatelessWidget {
                 return PropertyCard(
                   property: property,
                   onTap: () {
-                    PropertyDetailsRoute($extra: property).go(context);
+                    FavoritePropertyDetailsRoute($extra: property).go(context);
                   },
                 );
               },

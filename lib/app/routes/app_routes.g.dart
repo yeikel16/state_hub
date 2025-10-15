@@ -25,6 +25,13 @@ RouteBase get $homeShellRoute => ShellRouteData.$route(
     GoRouteData.$route(
       path: '/favorites',
       factory: $FavoritePropertiesRoute._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'details',
+          parentNavigatorKey: FavoritePropertyDetailsRoute.$parentNavigatorKey,
+          factory: $FavoritePropertyDetailsRoute._fromState,
+        ),
+      ],
     ),
     GoRouteData.$route(path: '/settings', factory: $SettingsRoute._fromState),
   ],
@@ -98,6 +105,32 @@ mixin $FavoritePropertiesRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $FavoritePropertyDetailsRoute on GoRouteData {
+  static FavoritePropertyDetailsRoute _fromState(GoRouterState state) =>
+      FavoritePropertyDetailsRoute($extra: state.extra as PropertyModel?);
+
+  FavoritePropertyDetailsRoute get _self =>
+      this as FavoritePropertyDetailsRoute;
+
+  @override
+  String get location => GoRouteData.$location('/favorites/details');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
 }
 
 mixin $SettingsRoute on GoRouteData {

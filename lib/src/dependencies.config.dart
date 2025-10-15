@@ -19,7 +19,7 @@ import 'package:state_hub/src/data/repository/favorites_repository.dart'
 import 'package:state_hub/src/data/repository/properties_repository.dart'
     as _i24;
 import 'package:state_hub/src/features/favorites/bloc/favorites_bloc.dart'
-    as _i535;
+    as _i327;
 import 'package:state_hub/src/features/properties/blocs/properties_bloc/properties_bloc.dart'
     as _i331;
 import 'package:state_hub/src/features/properties/blocs/properties_filter_bloc/properties_filter_bloc.dart'
@@ -54,8 +54,8 @@ extension GetItInjectableX on _i174.GetIt {
         dataSource: gh<_i388.FavoritesDataSource>(),
       ),
     );
-    gh.factory<_i535.FavoritesBloc>(
-      () => _i535.FavoritesBloc(
+    gh.factory<_i327.FavoritesBloc>(
+      () => _i327.FavoritesBloc(
         favoritesRepository: gh<_i751.FavoritesRepository>(),
       ),
     );

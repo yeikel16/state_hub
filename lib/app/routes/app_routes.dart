@@ -36,6 +36,11 @@ final appRouter = GoRouter(
     ),
     TypedGoRoute<FavoritePropertiesRoute>(
       path: '/favorites',
+      routes: [
+        TypedGoRoute<FavoritePropertyDetailsRoute>(
+          path: 'details',
+        ),
+      ],
     ),
     TypedGoRoute<SettingsRoute>(
       path: '/settings',
@@ -66,6 +71,24 @@ class HomeRoute extends GoRouteData with $HomeRoute {
 
 class PropertyDetailsRoute extends GoRouteData with $PropertyDetailsRoute {
   const PropertyDetailsRoute({required this.$extra});
+
+  final PropertyModel? $extra;
+
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return buildPageWithFadeTransition(
+      context: context,
+      state: state,
+      child: PropertyDetailsPage(property: $extra),
+    );
+  }
+}
+
+class FavoritePropertyDetailsRoute extends GoRouteData
+    with $FavoritePropertyDetailsRoute {
+  const FavoritePropertyDetailsRoute({required this.$extra});
 
   final PropertyModel? $extra;
 

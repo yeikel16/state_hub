@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:state_hub/src/core/url_strategy/url_strategy.dart';
+// import 'package:state_hub/src/core/url_strategy/url_strategy.dart';
 import 'package:state_hub/src/dependencies.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -33,9 +33,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  if (kIsWeb) {
-    usePathUrlStrategy();
-  }
+  // if (kIsWeb) {
+  //   usePathUrlStrategy();
+  // }
 
   // Add cross-flavor configuration here
   HydratedBloc.storage = await HydratedStorage.build(

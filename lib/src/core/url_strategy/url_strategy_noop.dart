@@ -1,3 +1,3 @@
-void usePathUrlStrategy() {
+void setPathUrlStrategy() {
   // noop
 }

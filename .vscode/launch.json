@@ -22,8 +22,7 @@
       "type": "dart",
       "program": "lib/main_development.dart",
       "args": [
-        "--flavor",
-        "development",
+        "--no-web-experimental-hot-reload",
         "--target",
         "lib/main_development.dart",
         "-d", "chrome",

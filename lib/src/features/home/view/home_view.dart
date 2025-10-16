@@ -228,7 +228,7 @@ class PropertiesList extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<PropertiesBloc, PropertiesState>(
       builder: (context, blocState) {
-        if (blocState.properties.isEmpty) {
+        if (blocState.properties.isEmpty && !blocState.isLoading) {
           return EmptyState(
             icon: Icons.search_off,
             title: l10n.noPropertiesFound,

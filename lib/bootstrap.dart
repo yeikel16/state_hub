@@ -3,9 +3,9 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:state_hub/src/core/url_strategy/url_strategy.dart';
 import 'package:state_hub/src/dependencies.dart';
 
 class AppBlocObserver extends BlocObserver {

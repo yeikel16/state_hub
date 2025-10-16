@@ -33,7 +33,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  if (kIsWeb) {
+  if (kIsWeb || kIsWasm) {
     setPathUrlStrategy();
   }
 

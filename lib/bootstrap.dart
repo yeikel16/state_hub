@@ -33,9 +33,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  if (kIsWeb || kIsWasm) {
-    setPathUrlStrategy();
-  }
+  setPathUrlStrategy();
 
   // Add cross-flavor configuration here
   HydratedBloc.storage = await HydratedStorage.build(

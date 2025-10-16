@@ -5,7 +5,7 @@
 
 A modern property search application built with Flutter, featuring a responsive design optimized for mobile, web, and desktop platforms.
 
-🌐 **Live Demo**: [https://state-b70dnl7uj-yeikel16s-projects.vercel.app/home](https://state-b70dnl7uj-yeikel16s-projects.vercel.app/home)
+🌐 **Live Demo**: [https://state-hub-smoky.vercel.app/home](https://state-hub-smoky.vercel.app/home)
 
 ---
 
